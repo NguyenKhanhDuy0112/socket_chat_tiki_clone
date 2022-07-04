@@ -1,16 +1,36 @@
 const conversationsService = require("./services/conversationsService");
 const messagesService = require("./services/messagesService");
 const usersService = require("./services/usersService");
+const express = require('express');
+
+const app = express();
+
+const http = require('http');
+const serverDao = http.createServer(app);
+
+const io = require('socket.io')(serverDao, {
+    cors: {
+        origin: "http://localhost:3000",
+    },
+});
+
+// const io = require("socket.io")(8900, {
+//     cors: {
+//       origin: "http://localhost:3000",
+//     },
+//   });
+
+const cors = require('cors');
+const router = require('./routes');
 const dotenv = require("dotenv")
 dotenv.config()
 
-const PORT = process.env.PORT || 8900
 
-const io = require("socket.io")(PORT, {
-    cors: {
-        origin: ["http://localhost:3000", "https://titki-clone-app.vercel.app"],
-    },
-});
+
+app.use(cors());
+app.use(router);
+
+const PORT = process.env.PORT || 8900
 
 let users = [];
 
@@ -61,7 +81,7 @@ io.on("connection", (socket) => {
     socket.on("getConversationsByUser", async (userId) => {
 
         try {
-            
+
             const user = getUser(userId)
             if (user) {
                 const conversations = await conversationsService.getConversationByUserId(userId)
@@ -77,7 +97,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("getNotifyByUser", async (data) => {
-        
+
     })
 
     socket.on("getMessages", async (data) => {
@@ -175,6 +195,7 @@ io.on("connection", (socket) => {
             console.log(err)
         }
 
-
     });
 });
+
+serverDao.listen(PORT, () => console.log(`Server has started.`));

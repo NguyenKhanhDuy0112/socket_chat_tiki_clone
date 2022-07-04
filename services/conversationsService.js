@@ -5,7 +5,6 @@ const getConversationByUserId = (userId) => {
 }
 
 const getConversationOfTwoUser = (firstUser, secondUser) => {
-    console.log(`${api.url.baseUrl}/${api.url.conversations}/${firstUser}/${secondUser}`)
     return api.get(`${api.url.conversations}/${firstUser}/${secondUser}`).then(res => res.data)
 }
 
