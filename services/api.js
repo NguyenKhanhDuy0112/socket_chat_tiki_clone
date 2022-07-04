@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const url = {
-    baseUrl : process.env.API_URL,
+    baseUrl : "https://fashion-sales-management.herokuapp.com/api",
     categories: '/categories',
     products: "/products",
     users : '/users',
