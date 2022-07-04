@@ -28,7 +28,11 @@ dotenv.config()
 
 
 app.use(cors());
-app.use(router);
+
+app.get('/', (req, res) => {
+    console.log("Server is running...")
+    res.status(200).json({message: "Server is running..."})
+});
 
 const PORT = process.env.PORT || 8900
 
