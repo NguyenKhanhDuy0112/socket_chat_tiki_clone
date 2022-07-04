@@ -31,7 +31,7 @@ app.use(cors());
 
 app.get('/', (req, res) => {
     console.log("Server is running...")
-    res.status(200).json({message: "Server is running..."})
+    res.status(200).json({ message: "Server is running..." })
 });
 
 const PORT = process.env.PORT || 8900
@@ -156,14 +156,16 @@ io.on("connection", (socket) => {
                 text: text
             }
         )
-        await io.to(`${findSender.socketId}`)
-            .emit(
-                `sendMessage`,
-                {
-                    ...message,
-                    createdAt: Date.now()
-                }
-            )
+        if (findSender) {
+            await io.to(`${findSender.socketId}`)
+                .emit(
+                    `sendMessage`,
+                    {
+                        ...message,
+                        createdAt: Date.now()
+                    }
+                )
+        }
 
         if (user) {
             io.to(`${user.socketId}`).emit("getMessage", {
