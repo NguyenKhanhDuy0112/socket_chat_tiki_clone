@@ -12,7 +12,7 @@ const serverDao = http.createServer(app);
 
 const io = require('socket.io')(serverDao, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "https://titki-clone-app.vercel.app"],
     },
 });
 
